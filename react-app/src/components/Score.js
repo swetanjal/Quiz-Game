@@ -5,8 +5,8 @@ class Score extends Component {
       return (
         <div className="App">
           <header className="App-header">
-            <h1 className="App-title">Your Score : {this.props.match.params.score}</h1>
           </header>
+          <h1 className="App-title">Your Score : {this.props.match.params.score}</h1>
         </div>
       );
     }

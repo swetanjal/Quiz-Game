@@ -59,6 +59,7 @@ func main() {
 	r := gin.Default()
 
 	r.GET("/leaderboard", Leaderboard) // Creating routes for each functionality
+	r.GET("/valid/:username", Valid_Username)
 	r.GET("/user/:username", GetUser)
 	r.POST("/create/user", CreateUser)
 	r.POST("/create/quiz", CreateQuiz)
@@ -97,6 +98,18 @@ func UpdatePerson(c *gin.Context) {
    c.JSON(200, person)
 }
 */
+func Valid_Username(c *gin.Context) {
+	username := c.Params.ByName("username")
+	var user User
+	if err := db.Where("Username = ?", username).Find(&user).Error; err != nil {
+		c.Header("access-control-allow-origin", "*")
+		c.JSON(200, user)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, user)
+	}
+}
+
 func GetQuestions(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var ques []Question
