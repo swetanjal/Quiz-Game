@@ -67,6 +67,7 @@ func main() {
 	r.GET("/quiz/:id/:no", GetQuestion)
 	r.POST("/record", PostRecord)
 	r.GET("/record", GetHistory)
+	r.GET("/questions/:id", GetQuestions)
 	/*r.PUT("/people/:id", UpdatePerson)
 	  r.DELETE("/people/:id", DeletePerson)*/
 	r.Use((cors.Default()))
@@ -96,6 +97,18 @@ func UpdatePerson(c *gin.Context) {
    c.JSON(200, person)
 }
 */
+func GetQuestions(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var ques []Question
+	if err := db.Where("Quiz_id = ?", id).Find(&ques).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, ques)
+	}
+}
+
 func PostRecord(c *gin.Context) {
 	var history History
 	c.BindJSON(&history)
