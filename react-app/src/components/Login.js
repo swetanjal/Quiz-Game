@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import './Signup.css';
+import './Login.css';
 
-class Signup extends Component {
+class Login extends Component {
   constructor() {
     super();
     this.state = {
@@ -13,8 +13,6 @@ class Signup extends Component {
       },
       submitted: false,
     }
-    this.handleFChange = this.handleFChange.bind(this);
-    this.handleLChange = this.handleLChange.bind(this);
     this.handleCChange = this.handleCChange.bind(this);
     this.handleUSChange = this.handleUSChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -22,39 +20,32 @@ class Signup extends Component {
 
   handleSubmit (event) {
     event.preventDefault();
-    var valid = false;
-    fetch(`http://localhost:8080/valid/${this.state.formData.Username}`)
+    var valid = true;
+    fetch(`http://localhost:8080/authenticate`, {
+        method : 'POST', 
+        body : JSON.stringify(this.state.formData),
+    })
       .then(response => response.json())
         .then((data) => {
             if(data["username"] == "")
-              valid = true;
-            //alert(valid);
+              valid = false;
         })
           .then(() => {
             if(valid == true){
-              fetch('http://localhost:8080/create/user', {
-                method: 'POST',
-                body: JSON.stringify(this.state.formData),
-                })
-                .then(response => {
-                  if(response.status >= 200 && response.status < 300)
-                  this.setState({submitted: true});
-                  this.props.history.push("/");
-                  window.location.reload();
-                });
-              }
-            });
-  }
-
+                alert("Authentication Successful.");
+                sessionStorage.setItem('username', this.state.formData.Username);
+                this.props.history.push('/');
+                window.location.reload();
+            }
+            else{
+                alert("Authentication Failed.");
+                this.props.history.push('/login');
+                window.location.reload();
+            }
+        })
+    }
   handleUSChange(event) {
     this.state.formData.Username = event.target.value;
-  }
-
-  handleFChange(event) {
-    this.state.formData.FirstName = event.target.value;
-  }
-  handleLChange(event) {
-    this.state.formData.LastName = event.target.value;
   }
   handleCChange(event) {
     this.state.formData.Password = event.target.value;
@@ -65,19 +56,11 @@ class Signup extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Create a New Person</h1>
+          <h1 className="App-title">User Login</h1>
         </header>
         <br/><br/>
         <div className="formContainer">
           <form onSubmit={this.handleSubmit}>
-            <div className="form-group">
-                <label>First Name</label>
-                <input type="text" className="form-control" value={this.state.FirstName} onChange={this.handleFChange}/>
-            </div>
-            <div className="form-group">
-                <label>Last Name</label>
-                <input type="text" className="form-control" value={this.state.LastName} onChange={this.handleLChange}/>
-            </div>
             <div className="form-group">
                 <label>Username</label>
                 <input type="text" className="form-control" value={this.state.Username} onChange={this.handleUSChange}/>
@@ -93,7 +76,7 @@ class Signup extends Component {
         {this.state.submitted &&
           <div>
             <h2>
-              New person successfully added.
+              Login successful.
             </h2>
              This has been printed using conditional rendering.
           </div>
@@ -104,4 +87,4 @@ class Signup extends Component {
   }
 }
 
-export default Signup;
+export default Login;
