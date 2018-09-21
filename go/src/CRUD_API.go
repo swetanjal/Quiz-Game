@@ -70,6 +70,7 @@ func main() {
 	r.GET("/record", GetHistory)
 	r.GET("/questions/:id", GetQuestions)
 	r.POST("/authenticate", Authenticate)
+	r.GET("/quizes", GetQuizes)
 	/*r.PUT("/people/:id", UpdatePerson)
 	  r.DELETE("/people/:id", DeletePerson)*/
 
@@ -100,6 +101,16 @@ func UpdatePerson(c *gin.Context) {
    c.JSON(200, person)
 }
 */
+func GetQuizes(c *gin.Context) {
+	var quiz []Quiz
+	if err := db.Find(&quiz).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, quiz)
+	}
+}
 func Authenticate(c *gin.Context) {
 	var user User
 	c.BindJSON(&user)
