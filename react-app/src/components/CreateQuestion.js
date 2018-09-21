@@ -34,7 +34,11 @@ class CreateQuestion extends Component {
       const request = new Request(`http://localhost:8080/questions/${this.props.match.params.id}`);
       fetch(request)
       .then(response => response.json())
-        .then((data) => {this.setState({count : data.length});});
+        .then((data) => {
+                        for(let i = 0; i < data.length; ++i){
+                          this.setState({count : Math.max(this.state.count, data[i]["q_no"])});
+                        }                  
+      });
   }
   handleSubmit (event) {
     event.preventDefault();

@@ -67,7 +67,7 @@ class ViewQuiz extends Component {
     let disp = []
     let cnt = 0;
     for(let i = 0; i < this.state.questions.length; i++){
-      disp.push(<p>{this.state.questions[i]["q_no"]}. {this.state.questions[i]["q"]}</p>);
+      disp.push(<p>{i + 1}) {this.state.questions[i]["q"]}</p>);
       disp.push(<div><label>
       <input name = {cnt} type = "checkbox" onChange = {this.handleInputChange} />
       {this.state.questions[i]["opta"]} 

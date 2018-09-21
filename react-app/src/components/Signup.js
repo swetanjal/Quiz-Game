@@ -11,6 +11,7 @@ class Signup extends Component {
         Username: "",
         Password: "",
       },
+      usernameInvalid : false,
       submitted: false,
     }
     this.handleFChange = this.handleFChange.bind(this);
@@ -21,6 +22,10 @@ class Signup extends Component {
   }
 
   handleSubmit (event) {
+    if(this.state.formData.Password == "" || this.state.formData.Username == ""){
+      alert("Username and Password are required fields.");
+      return;
+    }
     event.preventDefault();
     var valid = false;
     fetch(`http://localhost:8080/valid/${this.state.formData.Username}`)
@@ -43,6 +48,10 @@ class Signup extends Component {
                   window.location.reload();
                 });
               }
+            else{
+                this.setState({usernameInvalid : true});
+                this.props.history.push("/signup");
+            }
             });
   }
 
@@ -98,7 +107,13 @@ class Signup extends Component {
              This has been printed using conditional rendering.
           </div>
         }
-
+        {this.state.usernameInvalid &&
+          <div>
+            <h2>
+              Username already exists.
+            </h2>
+          </div>
+        }
       </div>
     );
   }

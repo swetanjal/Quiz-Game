@@ -8,6 +8,7 @@ import Logout from './Logout';
 import CreateQuestion from './CreateQuestion';
 import CreateQuiz from './CreateQuiz';
 import AddProblem from'./AddProblem';
+import Play from './Play';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends Component {
@@ -45,6 +46,7 @@ class App extends Component {
                  <Route exact path='/create/question/:id' component={CreateQuestion} />
                  <Route exact path='/create/quiz' component={CreateQuiz} />
                  <Route exact path='/addproblem' component={AddProblem} />
+                 <Route exact path='/play' component={Play} />
             </Switch>
           </div>
         </Router>
