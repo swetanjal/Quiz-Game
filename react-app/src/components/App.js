@@ -5,6 +5,7 @@ import Score from './Score';
 import Signup from './Signup';
 import Login from './Login';
 import Logout from './Logout';
+import CreateQuestion from './CreateQuestion';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends Component {
@@ -39,6 +40,7 @@ class App extends Component {
                  <Route exact path='/signup' component={Signup} />
                  <Route exact path='/Login' component={Login} />
                  <Route exact path='/Logout' component={Logout} />
+                 <Route exact path='/create/question/:id' component={CreateQuestion} />
             </Switch>
           </div>
         </Router>

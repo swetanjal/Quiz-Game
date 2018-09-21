@@ -60,6 +60,7 @@ class ViewQuiz extends Component {
           }
     }
     this.props.history.push(`/score/${this.props.match.params.number}/${score}`);
+    window.location.reload();
     //alert(score);
   }
   displayQuestions = () => {

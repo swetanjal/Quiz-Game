@@ -65,7 +65,7 @@ class Signup extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Create a New Person</h1>
+          <h1 className="App-title">Create Account</h1>
         </header>
         <br/><br/>
         <div className="formContainer">
