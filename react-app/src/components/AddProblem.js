@@ -32,7 +32,7 @@ class AddProblem extends Component {
                     <td>{this.state.quizes[i]["id"]}</td>
                     <td>{this.state.quizes[i]["name"]}</td>
                     <td>{this.state.quizes[i]["genre"]}</td>
-                    <td><Link to={`/create/question/${i + 1}`}>Add Problem</Link></td>
+                    <td><Link to={`/create/question/${this.state.quizes[i]["id"]}`}>Add Problem</Link></td>
                     </tr>);
       }
       return disp;

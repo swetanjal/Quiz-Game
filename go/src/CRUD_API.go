@@ -58,9 +58,10 @@ func main() {
 	db.AutoMigrate(&History{})
 	r := gin.Default()
 
-	r.GET("/leaderboard", Leaderboard) // Creating routes for each functionality
+	r.GET("/users", GetUsers) // Creating routes for each functionality
 	r.GET("/valid/:username", Valid_Username)
 	r.GET("/user/:username", GetUser)
+	r.GET("/questions", question)
 	r.POST("/create/user", CreateUser)
 	r.POST("/create/quiz", CreateQuiz)
 	r.GET("/quiz/:id", GetQuiz)
@@ -73,22 +74,44 @@ func main() {
 	r.GET("/quizes", GetQuizes)
 	/*r.PUT("/people/:id", UpdatePerson)
 	  r.DELETE("/people/:id", DeletePerson)*/
-
+	r.DELETE("/delete/user/:username", DeleteUser)
+	r.DELETE("/delete/quiz/:id", DeleteQuiz)
+	r.DELETE("/delete/question/:id/:no", DeleteQuestion)
 	r.Use((cors.Default()))
 	r.Run(":8080") // Run on port 8080
 }
 
-/*
-func DeletePerson(c *gin.Context) {
-   id := c.Params.ByName("id")
-   var person Person
-   d := db.Where("id = ?", id).Delete(&person)
-   fmt.Println(d)
-   c.Header("access-control-allow-origin", "*")
-   c.JSON(200, gin.H{"id #" + id: "deleted"})
+func DeleteQuestion(c *gin.Context) {
+	id := c.Params.ByName("id")
+	no := c.Params.ByName("no")
+	var ques []Question
+	d := db.Where("Quiz_id = ?", id).Where("Q_No = ?", no).Delete(&ques)
+	fmt.Println(d)
+	c.Header("access-control-allow-origin", "*")
+	c.JSON(200, gin.H{"Question" + id: "deleted"})
 }
 
-func UpdatePerson(c *gin.Context) {
+func DeleteQuiz(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var quiz Quiz
+	var ques []Question
+	d := db.Where("ID = ?", id).Delete(&quiz)
+	d = db.Where("Quiz_id = ?", id).Delete(&ques)
+	fmt.Println(d)
+	c.Header("access-control-allow-origin", "*")
+	c.JSON(200, gin.H{"Quiz #" + id: "deleted"})
+}
+
+func DeleteUser(c *gin.Context) {
+	username := c.Params.ByName("username")
+	var user User
+	d := db.Where("Username = ?", username).Delete(&user)
+	fmt.Println(d)
+	c.Header("access-control-allow-origin", "*")
+	c.JSON(200, gin.H{"username #" + username: "deleted"})
+}
+
+/*func UpdatePerson(c *gin.Context) {
    var person Person
    id := c.Params.ByName("id")
    if err := db.Where("id = ?", id).First(&person).Error; err != nil {
@@ -101,6 +124,16 @@ func UpdatePerson(c *gin.Context) {
    c.JSON(200, person)
 }
 */
+func question(c *gin.Context) {
+	var ques []Question
+	if err := db.Find(&ques).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, ques)
+	}
+}
 func GetQuizes(c *gin.Context) {
 	var quiz []Quiz
 	if err := db.Find(&quiz).Error; err != nil {
@@ -230,7 +263,7 @@ func GetUser(c *gin.Context) {
 	}
 }
 
-func Leaderboard(c *gin.Context) {
+func GetUsers(c *gin.Context) {
 	var user []User
 	if err := db.Find(&user).Error; err != nil {
 		c.AbortWithStatus(404)

@@ -9,6 +9,10 @@ import CreateQuestion from './CreateQuestion';
 import CreateQuiz from './CreateQuiz';
 import AddProblem from'./AddProblem';
 import Play from './Play';
+import DeleteUser from './DeleteUser';
+import ViewUsers from './ViewUsers';
+import DeleteQuiz from './DeleteQuiz';
+import DeleteQuestion from './DeleteQuestion';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends Component {
@@ -47,6 +51,10 @@ class App extends Component {
                  <Route exact path='/create/quiz' component={CreateQuiz} />
                  <Route exact path='/addproblem' component={AddProblem} />
                  <Route exact path='/play' component={Play} />
+                 <Route exact path='/delete/users' component={DeleteUser} />
+                 <Route exact path='/view/users' component={ViewUsers} />
+                 <Route exact path='/delete/quiz' component={DeleteQuiz} />
+                 <Route exact path='/delete/question' component={DeleteQuestion} />
             </Switch>
           </div>
         </Router>
