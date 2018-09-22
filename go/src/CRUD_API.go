@@ -13,6 +13,7 @@ var db *gorm.DB // declaring the db globally
 var err error
 
 type User struct {
+	ID        uint   `json:"id"`
 	Username  string `json:"username", gorm:"primary_key"`
 	FirstName string `json:"firstname"`
 	LastName  string `json:"lastname"`
@@ -26,6 +27,7 @@ type Quiz struct {
 }
 
 type Question struct {
+	ID        uint   `json:"id"`
 	Quiz_id   uint   `json:"quiz_id"`
 	Q_No      uint   `json:"q_no"`
 	Q         string `json:"q"`
@@ -40,6 +42,7 @@ type Question struct {
 }
 
 type History struct {
+	ID      uint   `json:"id"`
 	User_id string `json:"user_id"`
 	Quiz_ID string `json:"quiz_id"`
 	Score   uint   `json:"score"`
@@ -72,8 +75,12 @@ func main() {
 	r.GET("/questions/:id", GetQuestions)
 	r.POST("/authenticate", Authenticate)
 	r.GET("/quizes", GetQuizes)
+	r.PUT("/edit/question/:id/:no", UpdateQuestion)
+	r.PUT("/edit/user/:username", UpdateUser)
+	r.PUT("/edit/quiz/:genre", UpdateQuiz)
 	/*r.PUT("/people/:id", UpdatePerson)
 	  r.DELETE("/people/:id", DeletePerson)*/
+	r.GET("/get/question/:id/:no", GetQues)
 	r.DELETE("/delete/user/:username", DeleteUser)
 	r.DELETE("/delete/quiz/:id", DeleteQuiz)
 	r.DELETE("/delete/question/:id/:no", DeleteQuestion)
@@ -110,20 +117,59 @@ func DeleteUser(c *gin.Context) {
 	c.Header("access-control-allow-origin", "*")
 	c.JSON(200, gin.H{"username #" + username: "deleted"})
 }
-
-/*func UpdatePerson(c *gin.Context) {
-   var person Person
-   id := c.Params.ByName("id")
-   if err := db.Where("id = ?", id).First(&person).Error; err != nil {
-      c.AbortWithStatus(404)
-      fmt.Println(err)
-   }
-   c.BindJSON(&person)
-   db.Save(&person)
-   c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
-   c.JSON(200, person)
+func UpdateUser(c *gin.Context) {
+	var user User
+	username := c.Params.ByName("username")
+	if err := db.Where("username = ? ", username).Find(&user).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&user)
+	db.Save(&user)
+	c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+	c.JSON(200, user)
 }
-*/
+
+func UpdateQuiz(c *gin.Context) {
+	var quiz Quiz
+	id := c.Params.ByName("genre")
+	if err := db.Where("genre = ?", id).Find(&quiz).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&quiz)
+	db.Save(&quiz)
+	c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+	c.JSON(200, quiz)
+}
+
+func UpdateQuestion(c *gin.Context) {
+	var question Question
+	id := c.Params.ByName("id")
+	no := c.Params.ByName("no")
+	if err := db.Where("quiz_id = ? And q_no = ?", id, no).Find(&question).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	}
+	c.BindJSON(&question)
+	db.Save(&question)
+	c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+	c.JSON(200, question)
+}
+
+func GetQues(c *gin.Context) {
+	id := c.Params.ByName("id")
+	no := c.Params.ByName("no")
+	var ques Question
+	if err := db.Where("Quiz_id = ?", id).Where("Q_no = ?", no).Find(&ques).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, ques)
+	}
+}
+
 func question(c *gin.Context) {
 	var ques []Question
 	if err := db.Find(&ques).Error; err != nil {

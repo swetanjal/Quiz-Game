@@ -13,6 +13,8 @@ import DeleteUser from './DeleteUser';
 import ViewUsers from './ViewUsers';
 import DeleteQuiz from './DeleteQuiz';
 import DeleteQuestion from './DeleteQuestion';
+import EditQuestion from './EditQuestion';
+import UpdateQuestion from './UpdateQuestion';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 
 class App extends Component {
@@ -55,6 +57,8 @@ class App extends Component {
                  <Route exact path='/view/users' component={ViewUsers} />
                  <Route exact path='/delete/quiz' component={DeleteQuiz} />
                  <Route exact path='/delete/question' component={DeleteQuestion} />
+                 <Route exact path='/edit/question/:id/:no' component={EditQuestion} />
+                 <Route exact path='/update/question' component={UpdateQuestion} />
             </Switch>
           </div>
         </Router>
