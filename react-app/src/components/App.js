@@ -16,6 +16,9 @@ import DeleteQuestion from './DeleteQuestion';
 import EditQuestion from './EditQuestion';
 import UpdateQuestion from './UpdateQuestion';
 import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import ViewUser from './ViewUser';
+import Leaderboard from './Leaderboard';
+import LeaderboardGenre from './LeaderboardGenre';
 
 class App extends Component {
   render() {
@@ -59,6 +62,9 @@ class App extends Component {
                  <Route exact path='/delete/question' component={DeleteQuestion} />
                  <Route exact path='/edit/question/:id/:no' component={EditQuestion} />
                  <Route exact path='/update/question' component={UpdateQuestion} />
+                 <Route exact path='/profile/:id' component={ViewUser} />
+                 <Route exact path='/leaderboard' component={Leaderboard} />
+                 <Route exact path='/leaderboard/:genre' component={LeaderboardGenre} />
             </Switch>
           </div>
         </Router>

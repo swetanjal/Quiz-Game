@@ -44,7 +44,7 @@ type Question struct {
 type History struct {
 	ID      uint   `json:"id"`
 	User_id string `json:"user_id"`
-	Quiz_ID string `json:"quiz_id"`
+	Quiz_ID uint   `json:"quiz_id"`
 	Score   uint   `json:"score"`
 }
 
@@ -72,6 +72,7 @@ func main() {
 	r.GET("/quiz/:id/:no", GetQuestion)
 	r.POST("/record", PostRecord)
 	r.GET("/record", GetHistory)
+	r.GET("/record/:id", GetUserHistory)
 	r.GET("/questions/:id", GetQuestions)
 	r.POST("/authenticate", Authenticate)
 	r.GET("/quizes", GetQuizes)
@@ -81,11 +82,22 @@ func main() {
 	/*r.PUT("/people/:id", UpdatePerson)
 	  r.DELETE("/people/:id", DeletePerson)*/
 	r.GET("/get/question/:id/:no", GetQues)
+	r.GET("/get/quiz/:genre", GetByGenre)
 	r.DELETE("/delete/user/:username", DeleteUser)
 	r.DELETE("/delete/quiz/:id", DeleteQuiz)
+	r.DELETE("/delete/record/:id", DeleteRecord)
 	r.DELETE("/delete/question/:id/:no", DeleteQuestion)
 	r.Use((cors.Default()))
 	r.Run(":8080") // Run on port 8080
+}
+
+func DeleteRecord(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var record []History
+	d := db.Where("Quiz_id = ?", id).Delete(&record)
+	fmt.Println(d)
+	c.Header("access-control-allow-origin", "*")
+	c.JSON(200, gin.H{"Record" + id: "deleted"})
 }
 
 func DeleteQuestion(c *gin.Context) {
@@ -170,6 +182,18 @@ func GetQues(c *gin.Context) {
 	}
 }
 
+func GetByGenre(c *gin.Context) {
+	genre := c.Params.ByName("genre")
+	var quiz []Quiz
+	if err := db.Where("genre = ?", genre).Find(&quiz).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, quiz)
+	}
+}
+
 func question(c *gin.Context) {
 	var ques []Question
 	if err := db.Find(&ques).Error; err != nil {
@@ -240,6 +264,18 @@ func PostRecord(c *gin.Context) {
 func GetHistory(c *gin.Context) {
 	var record []History
 	if err := db.Find(&record).Error; err != nil {
+		c.AbortWithStatus(404)
+		fmt.Println(err)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, record)
+	}
+}
+
+func GetUserHistory(c *gin.Context) {
+	id := c.Params.ByName("id")
+	var record []History
+	if err := db.Where("User_id = ?", id).Find(&record).Error; err != nil {
 		c.AbortWithStatus(404)
 		fmt.Println(err)
 	} else {
