@@ -25,8 +25,12 @@ class DeleteUser extends Component {
   		method : 'DELETE'
   	})
   		.then(res => {
-  			window.location.reload();
-  			console.log(res);
+        fetch(`http://127.0.0.1:8080/delete/records/${this.state.id}`, {method : 'DELETE'})
+        .then(response => {
+          window.location.reload();
+          console.log(res);
+        })
+        
   		})
   }
   

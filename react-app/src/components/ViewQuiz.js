@@ -25,9 +25,28 @@ class ViewQuiz extends Component {
   }
   // Lifecycle hook, runs after component has mounted onto the DOM structure
   componentDidMount() {
+    var logged_in = sessionStorage.getItem('username')
+    if (logged_in == null){
+      alert("Please Log in to play.");
+      this.props.history.push('/login');
+    }
     const {number} = this.props.match.params;
+    
     const request = new Request(`http://localhost:8080/quiz/${number}`);
     const request1 = new Request(`http://localhost:8080/questions/${number}`);
+    const request2 = new Request(`http://localhost:8080/verify/${number}/${logged_in}`);
+    fetch(request2)
+      .then(response => response.json())
+        .then(data => {
+          if(data["user_id"] === ""){
+            
+          }
+          else
+          {
+            alert("You have already attempted this quiz.");
+            this.props.history.push('/');
+          }
+        })
     fetch(request)
       .then(response => response.json())
         .then(data => this.setState({quiz_data: data}));
@@ -59,6 +78,16 @@ class ViewQuiz extends Component {
               score = score + 1;
           }
     }
+    var dict = {}
+    dict["user_id"] = sessionStorage.getItem('username');
+    dict["quiz_id"] = parseInt(this.props.match.params.number);
+    dict["score"] = score;
+    //alert(JSON.stringify(dict));
+    const request = new Request(`http://localhost:8080/record`);
+    fetch(request, {
+      method : 'POST',
+      body : JSON.stringify(dict),
+    })
     this.props.history.push(`/score/${this.props.match.params.number}/${score}`);
     window.location.reload();
     //alert(score);

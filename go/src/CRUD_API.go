@@ -81,8 +81,10 @@ func main() {
 	r.PUT("/edit/quiz/:genre", UpdateQuiz)
 	/*r.PUT("/people/:id", UpdatePerson)
 	  r.DELETE("/people/:id", DeletePerson)*/
+	r.GET("/verify/:id/:username", GetRecord)
 	r.GET("/get/question/:id/:no", GetQues)
 	r.GET("/get/quiz/:genre", GetByGenre)
+	r.DELETE("/delete/records/:username", DeleteUserRecords)
 	r.DELETE("/delete/user/:username", DeleteUser)
 	r.DELETE("/delete/quiz/:id", DeleteQuiz)
 	r.DELETE("/delete/record/:id", DeleteRecord)
@@ -119,6 +121,14 @@ func DeleteQuiz(c *gin.Context) {
 	fmt.Println(d)
 	c.Header("access-control-allow-origin", "*")
 	c.JSON(200, gin.H{"Quiz #" + id: "deleted"})
+}
+
+func DeleteUserRecords(c *gin.Context) {
+	username := c.Params.ByName("username")
+	d := db.Where("User_id = ?", username).Delete(History{})
+	fmt.Println(d)
+	c.Header("access-control-allow-origin", "*")
+	c.JSON(200, gin.H{"Done": username})
 }
 
 func DeleteUser(c *gin.Context) {
@@ -259,6 +269,20 @@ func PostRecord(c *gin.Context) {
 	db.Create(&history)
 	c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
 	c.JSON(200, history)
+}
+
+func GetRecord(c *gin.Context) {
+	username := c.Params.ByName("username")
+	id := c.Params.ByName("id")
+	var record History
+	if err := db.Where("quiz_id = ?", id).Where("user_id = ?", username).Find(&record).Error; err != nil {
+		//c.AbortWithStatus(404)
+		//fmt.Println(err)
+		c.JSON(200, record)
+	} else {
+		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		c.JSON(200, record)
+	}
 }
 
 func GetHistory(c *gin.Context) {
