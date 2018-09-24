@@ -31,8 +31,8 @@ class Play extends Component {
           disp.push(<tr>
                     <td>{this.state.quizes[i]["id"]}</td>
                     <td>{this.state.quizes[i]["name"]}</td>
-                    <td>{this.state.quizes[i]["genre"]}</td>
-                    <td><Link to={`/quiz/${i + 1}`}>Play</Link></td>
+                    <td><Link to={`/leaderboard/${this.state.quizes[i]["genre"]}`}>{this.state.quizes[i]["genre"]}</Link></td>
+                    <td><Link to={`/quiz/${this.state.quizes[i]["id"]}`}>Play</Link></td>
                     </tr>);
       }
       return disp;

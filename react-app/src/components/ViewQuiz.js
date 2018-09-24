@@ -43,8 +43,11 @@ class ViewQuiz extends Component {
           }
           else
           {
-            alert("You have already attempted this quiz.");
-            this.props.history.push('/');
+            //alert(data["user_id"])
+            if(data["user_id"] != 'admin'){
+              alert("You have already attempted this quiz.");
+              this.props.history.push('/');
+            }
           }
         })
     fetch(request)
@@ -82,6 +85,11 @@ class ViewQuiz extends Component {
     dict["user_id"] = sessionStorage.getItem('username');
     dict["quiz_id"] = parseInt(this.props.match.params.number);
     dict["score"] = score;
+    if(dict["user_id"] == 'admin'){
+      alert("Test Successful");
+      this.props.history.push(`/score/${this.props.match.params.number}/${score}`);
+      window.location.reload();
+    }
     //alert(JSON.stringify(dict));
     const request = new Request(`http://localhost:8080/record`);
     fetch(request, {
@@ -90,7 +98,6 @@ class ViewQuiz extends Component {
     })
     this.props.history.push(`/score/${this.props.match.params.number}/${score}`);
     window.location.reload();
-    //alert(score);
   }
   displayQuestions = () => {
     let disp = []

@@ -37,13 +37,16 @@ class App extends Component {
     disp.push(<li><Link to = {'/update/question'}>Update Question</Link></li>);
     disp.push(<li><Link to = {'/delete/users'}>Delete User</Link></li>);
     disp.push(<li><Link to = {'/view/users'}>Registered Users</Link></li>);
+    disp.push(<li><Link to = {'/test'}>Test a Quiz</Link></li>);
     return disp;
   }
   userPanel(){
     var disp = []
     disp.push(<li><Link to={'/'}>Home</Link></li>);
+    disp.push(<li><Link to={`/profile/${sessionStorage.getItem('username')}`}>My Attempted Quizes</Link></li>)
     disp.push(<li><Link to={'/play'}>Play!</Link></li>);
     disp.push(<li><Link to={'/leaderboard'}>Leaderboard</Link></li>)
+
     return disp;
   }
   notLoggedPanel(){
@@ -103,6 +106,7 @@ class App extends Component {
                  <Route exact path='/profile/:id' component={ViewUser} />
                  <Route exact path='/leaderboard' component={Leaderboard} />
                  <Route exact path='/leaderboard/:genre' component={LeaderboardGenre} />
+                 <Route exact path='/test' component={Play} />
             </Switch>
           </div>
         </Router>
