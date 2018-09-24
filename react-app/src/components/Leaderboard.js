@@ -70,7 +70,7 @@ class Leaderboard extends Component {
     return (
       <div className="App">
         <header className="App-header">
-          <h1 className="App-title">Leaderboard</h1>
+          <h1 className="App-title">Overall Leaderboard</h1>
         </header>
         <table className="table-hover">
           <thead>

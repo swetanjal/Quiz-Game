@@ -35,6 +35,17 @@ class CreateQuiz extends Component {
   handleGenreChange(event) {
     this.state.formData.genre = event.target.value.toLowerCase();
   }
+  componentDidMount(){
+    var user = sessionStorage.getItem('username');
+    if(user == 'admin'){
+
+    }
+    else{
+      alert("You are not permitted to view the contents of this page!");
+      this.props.history.push('/');
+      window.location.reload();
+    }
+  }
   render() {
     return (
       <div className="App">

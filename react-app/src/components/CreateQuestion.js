@@ -30,6 +30,15 @@ class CreateQuestion extends Component {
     this.handleOptionChange = this.handleOptionChange.bind(this);
   }
   componentDidMount(){
+    var user = sessionStorage.getItem('username');
+    if(user == 'admin'){
+
+    }
+    else{
+      alert("You are not permitted to view the contents of this page!");
+      this.props.history.push('/');
+      window.location.reload();
+    }
       this.state.formData.Quiz_id = parseInt(this.props.match.params.id);
       const request = new Request(`http://localhost:8080/questions/${this.props.match.params.id}`);
       fetch(request)

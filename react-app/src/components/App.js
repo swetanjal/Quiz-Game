@@ -21,6 +21,39 @@ import Leaderboard from './Leaderboard';
 import LeaderboardGenre from './LeaderboardGenre';
 
 class App extends Component {
+  constructor()
+  {
+    super();
+    this.adminPanel = this.adminPanel.bind(this);
+    this.notLoggedPanel = this.notLoggedPanel.bind(this);
+    this.userPanel = this.userPanel.bind(this);
+  }
+  adminPanel(){
+    var disp = []
+    disp.push(<li><Link to = {'/create/quiz'}>Create Quiz</Link></li>);
+    disp.push(<li><Link to = {'/addproblem'}>Add Problem</Link></li>);
+    disp.push(<li><Link to = {'/delete/question'}>Delete Question</Link></li>);
+    disp.push(<li><Link to = {'/delete/quiz'}>Delete Quiz</Link></li>);
+    disp.push(<li><Link to = {'/update/question'}>Update Question</Link></li>);
+    disp.push(<li><Link to = {'/delete/users'}>Delete User</Link></li>);
+    disp.push(<li><Link to = {'/view/users'}>Registered Users</Link></li>);
+    return disp;
+  }
+  userPanel(){
+    var disp = []
+    disp.push(<li><Link to={'/'}>Home</Link></li>);
+    disp.push(<li><Link to={'/play'}>Play!</Link></li>);
+    disp.push(<li><Link to={'/leaderboard'}>Leaderboard</Link></li>)
+    return disp;
+  }
+  notLoggedPanel(){
+    var disp = []
+    disp.push(<li><Link to={'/'}>Home</Link></li>);
+    disp.push(<li><Link to={'/Signup'}>Signup</Link></li>);
+    disp.push(<li><Link to={'/Login'}>Login</Link></li>);
+    return disp;
+  }
+
   render() {
     return (
       <div>
@@ -32,12 +65,17 @@ class App extends Component {
                   <Link className="navbar-brand" to={'/'}>Quiz Game</Link>
                 </div>
                 <ul className="nav navbar-nav">
-                  <li><Link to={'/'}>Home</Link></li>
+                  
                   { sessionStorage.getItem('username') == null &&
-                    <li><Link to={'/Signup'}>Signup</Link></li>
+                    this.notLoggedPanel()
                   }
-                  { sessionStorage.getItem('username') == null &&
-                    <li><Link to={'/Login'}>Login</Link></li>
+                  {
+                    sessionStorage.getItem('username') == 'admin' &&
+                    this.adminPanel()
+                  }
+                  {
+                    sessionStorage.getItem('username') && sessionStorage.getItem('username') != 'admin' &&
+                    this.userPanel()
                   }
                   { sessionStorage.getItem('username') &&
                     <li><Link to={'/Logout'}>Logout</Link></li>

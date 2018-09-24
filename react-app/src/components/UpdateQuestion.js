@@ -18,6 +18,15 @@ class UpdateQuestion extends Component {
       return a + "/" + b;
   }
   componentDidMount() {
+    var user = sessionStorage.getItem('username');
+    if(user == 'admin'){
+
+    }
+    else{
+      alert("You are not permitted to view the contents of this page!");
+      this.props.history.push('/');
+      window.location.reload();
+    }
     const request = new Request('http://127.0.0.1:8080/questions');
     fetch(request)
       .then(response => response.json())
