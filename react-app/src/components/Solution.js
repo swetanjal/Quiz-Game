@@ -51,8 +51,9 @@ class Solution extends Component {
     componentDidMount(){
         var logged_in = sessionStorage.getItem('username')
         if (logged_in == null){
-            alert("Please Log in to play.");
+            alert("Please Log in to view content.");
             this.props.history.push('/login');
+            return;
         }
         const {number} = this.props.match.params;
         

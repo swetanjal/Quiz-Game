@@ -50,6 +50,8 @@ class ViewQuiz extends Component {
             }
           }
         })
+    if(sessionStorage.getItem('lives') == null || sessionStorage.getItem('lives') == 'null')
+      sessionStorage.setItem('lives', 3);
     fetch(request)
       .then(response => response.json())
         .then(data => this.setState({quiz_data: data}));
@@ -73,6 +75,8 @@ class ViewQuiz extends Component {
       answer.push(this.state.questions[i]["d_correct"]);
     }
     var score = 0;
+    var wa = [];
+    var ques_cnt = 0;
     for(let i = 0; i < this.state.correct_options.length; i = i + 4){
       if(this.state.correct_options[i] == answer[i] && this.state.correct_options[i + 1] == answer[i + 1]
          && this.state.correct_options[i + 2] == answer[i + 2]
@@ -80,7 +84,20 @@ class ViewQuiz extends Component {
           {
               score = score + 1;
           }
+          else
+          {
+            wa.push(this.state.questions[ques_cnt]["q"]);
+          }
+          ques_cnt++;
     }
+    if(wa.length > 0 && parseInt(sessionStorage.getItem('lives')) >= 1){
+      alert("You have attempted the following questions incorrectly " + JSON.stringify(wa));
+      sessionStorage.setItem('lives',  parseInt(sessionStorage.getItem('lives')) - 1);
+      alert("You have " + parseInt(sessionStorage.getItem('lives')) + " lifelines left");
+      //this.props.history.push(`/quiz/${this.props.match.params.number}`);
+      return;
+    }
+    sessionStorage.setItem('lives', null);
     var dict = {}
     dict["user_id"] = sessionStorage.getItem('username');
     dict["quiz_id"] = parseInt(this.props.match.params.number);
