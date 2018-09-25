@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './ViewUsers.css';
-
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 class ViewUsers extends Component {
   constructor()
   {
@@ -18,6 +18,7 @@ class ViewUsers extends Component {
       alert("You are not permitted to view the contents of this page!");
       this.props.history.push('/');
       window.location.reload();
+      return;
     }
     const request = new Request('http://127.0.0.1:8080/users');
     fetch(request)
@@ -44,7 +45,7 @@ class ViewUsers extends Component {
           <tbody>{this.state.data.map((item, key) => {
                return (  
                   	<tr key = {key}>
-                  	<td>{item.username}</td>
+                  	<td><Link to={`/profile/${item.username}`}>{item.username}</Link></td>
                     <td>{item.firstname}</td>
                     <td>{item.lastname}</td>
                     </tr>

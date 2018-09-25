@@ -26,6 +26,7 @@ class UpdateQuestion extends Component {
       alert("You are not permitted to view the contents of this page!");
       this.props.history.push('/');
       window.location.reload();
+      return;
     }
     const request = new Request('http://127.0.0.1:8080/questions');
     fetch(request)

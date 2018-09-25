@@ -29,6 +29,7 @@ class ViewQuiz extends Component {
     if (logged_in == null){
       alert("Please Log in to play.");
       this.props.history.push('/login');
+      return;
     }
     const {number} = this.props.match.params;
     
