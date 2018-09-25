@@ -19,6 +19,7 @@ import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 import ViewUser from './ViewUser';
 import Leaderboard from './Leaderboard';
 import LeaderboardGenre from './LeaderboardGenre';
+import PlayByGenre from './PlayByGenre';
 
 class App extends Component {
   constructor()
@@ -107,6 +108,7 @@ class App extends Component {
                  <Route exact path='/leaderboard' component={Leaderboard} />
                  <Route exact path='/leaderboard/:genre' component={LeaderboardGenre} />
                  <Route exact path='/test' component={Play} />
+                 <Route exact path='/play/:genre' component={PlayByGenre} />
             </Switch>
           </div>
         </Router>
