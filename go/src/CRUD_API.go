@@ -39,6 +39,7 @@ type Question struct {
 	B_correct uint   `json:"b_correct", gorm:"default:0"`
 	C_correct uint   `json:"c_correct", gorm:"default:0"`
 	D_correct uint   `json:"d_correct", gorm:"default:0"`
+	Img       string `json:"img"`
 }
 
 type History struct {
@@ -54,7 +55,6 @@ func main() {
 		fmt.Println(err)
 	}
 	defer db.Close()
-
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Quiz{})
 	db.AutoMigrate(&Question{})

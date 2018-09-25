@@ -19,6 +19,7 @@ class Solution extends Component {
         let cnt = 0;
         for(let i = 0; i < this.state.questions.length; i++){
           disp.push(<p>{i + 1}) {this.state.questions[i]["q"]}</p>);
+          disp.push(<img src = {this.state.questions[i]["img"]} alt = ""/>);
           disp.push(<div><label>
           <input name = {cnt} type = "checkbox" checked = {this.state.questions[i]["a_correct"]}/>
           {this.state.questions[i]["opta"]} 

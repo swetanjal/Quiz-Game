@@ -17,10 +17,12 @@ class CreateQuestion extends Component {
         B_correct: 0,
         C_correct: 0,
         D_correct: 0,
+        img : "",
       },
       count : 0,
       submitted: false,
     }
+    this.handleimgChange = this.handleimgChange.bind(this);
     this.handleqChange = this.handleqChange.bind(this);
     this.handleoptAChange = this.handleoptAChange.bind(this);
     this.handleoptBChange = this.handleoptBChange.bind(this);
@@ -49,6 +51,7 @@ class CreateQuestion extends Component {
                         }                  
       });
   }
+
   handleSubmit (event) {
     event.preventDefault();
     this.state.formData.Q_No = this.state.count + 1;
@@ -63,6 +66,9 @@ class CreateQuestion extends Component {
             window.location.reload();
         }
       })
+  }
+  handleimgChange(event){
+    this.state.formData.img = event.target.value;
   }
   handleqChange(event) {
     this.state.formData.Q = event.target.value;
@@ -100,6 +106,10 @@ class CreateQuestion extends Component {
             <div className="form-group">
                 <label>Question</label>
                 <input type="text" className="form-control" value={this.state.Q} onChange={this.handleqChange}/>
+            </div>
+            <div className="form-group">
+                <label>Image Url(if any)</label>
+                <input type="text" className="form-control" value={this.state.img} onChange={this.handleimgChange}/>
             </div>
             <div className="form-group">
                 <label>Option A</label>
