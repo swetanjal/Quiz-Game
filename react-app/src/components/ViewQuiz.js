@@ -35,6 +35,15 @@ class ViewQuiz extends Component {
     const request = new Request(`http://localhost:8080/quiz/${number}`);
     const request1 = new Request(`http://localhost:8080/questions/${number}`);
     const request2 = new Request(`http://localhost:8080/verify/${number}/${logged_in}`);
+    fetch(request)
+      .then(response => {
+        if(response.status == 404){
+          alert("Quiz #" + number + " not found.");
+          this.props.history.push('/');
+          window.location.reload();
+          return;
+        }
+      })
     fetch(request2)
       .then(response => response.json())
         .then(data => {

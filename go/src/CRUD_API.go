@@ -342,8 +342,10 @@ func GetQuiz(c *gin.Context) {
 	id := c.Params.ByName("id")
 	var quiz Quiz
 	if err := db.Where("ID = ?", id).First(&quiz).Error; err != nil {
-		c.AbortWithStatus(404)
-		fmt.Println(err)
+		//c.AbortWithStatus(404)
+		//fmt.Println(err)
+		c.Header("access-control-allow-origin", "*")
+		c.JSON(404, quiz)
 	} else {
 		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
 		c.JSON(200, quiz)
