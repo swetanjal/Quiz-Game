@@ -274,8 +274,9 @@ func PostRecord(c *gin.Context) {
 func GetRecord(c *gin.Context) {
 	username := c.Params.ByName("username")
 	id := c.Params.ByName("id")
-	var record History
+	record := History{ID: 0, User_id: "", Quiz_ID: 0, Score: 0}
 	if err := db.Where("quiz_id = ?", id).Where("user_id = ?", username).Find(&record).Error; err != nil {
+		c.Header("access-control-allow-origin", "*")
 		//c.AbortWithStatus(404)
 		//fmt.Println(err)
 		c.JSON(200, record)

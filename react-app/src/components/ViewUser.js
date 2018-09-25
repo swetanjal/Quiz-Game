@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './ViewUser.css';
-
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
 class ViewUser extends Component {
   constructor()
   {
@@ -34,7 +34,7 @@ class ViewUser extends Component {
           <tbody>{this.state.data.map((item, key) => {
                return (  
                   	<tr key = {key}>
-                  	<td>{item.quiz_id}</td>
+                  	<td><Link to={`/solution/${item.quiz_id}`}>{item.quiz_id}</Link></td>
                     <td>{item.score}</td>
                     </tr>
                 )

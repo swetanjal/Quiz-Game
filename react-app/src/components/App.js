@@ -20,7 +20,7 @@ import ViewUser from './ViewUser';
 import Leaderboard from './Leaderboard';
 import LeaderboardGenre from './LeaderboardGenre';
 import PlayByGenre from './PlayByGenre';
-
+import Solution from './Solution';
 class App extends Component {
   constructor()
   {
@@ -109,6 +109,7 @@ class App extends Component {
                  <Route exact path='/leaderboard/:genre' component={LeaderboardGenre} />
                  <Route exact path='/test' component={Play} />
                  <Route exact path='/play/:genre' component={PlayByGenre} />
+                 <Route exact path='/solution/:number' component={Solution} />
             </Switch>
           </div>
         </Router>
