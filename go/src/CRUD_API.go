@@ -6,6 +6,7 @@ import (
 	"github.com/gin-contrib/cors" // Why do we need this package?
 	"github.com/gin-gonic/gin"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 	_ "github.com/jinzhu/gorm/dialects/sqlite" // If you want to use mysql or any other db, replace this line
 )
 
@@ -228,13 +229,19 @@ func Authenticate(c *gin.Context) {
 	var user User
 	c.BindJSON(&user)
 	username := user.Username
-	password := user.Password
 	var success User
-	if err := db.Where("Username = ?", username).Where("Password = ?", password).Find(&success).Error; err != nil {
+	if err := db.Where("Username = ?", username).Find(&success).Error; err != nil {
 		c.Header("access-control-allow-origin", "*")
 		c.JSON(200, success)
 	} else {
 		c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
+		err := bcrypt.CompareHashAndPassword([]byte(success.Password), []byte(user.Password))
+		if err != nil {
+			var fail User
+        	c.JSON(200, fail)
+        	return
+    	}
+    	fmt.Println("Authenticated")
 		c.JSON(200, success)
 	}
 }
@@ -355,9 +362,14 @@ func GetQuiz(c *gin.Context) {
 func CreateUser(c *gin.Context) {
 	var user User
 	c.BindJSON(&user)
-	db.Create(&user)
+	hash, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+	if err!=nil{
+		///anlald
+	}
+	user1 := User{FirstName : user.FirstName, LastName: user.LastName, Password : string(hash), Username : user.Username}
+	db.Create(&user1)
 	c.Header("access-control-allow-origin", "*") // Why am I doing this? Find out. Try running with this line commented
-	c.JSON(200, user)
+	c.JSON(200, user1)
 }
 
 func GetUser(c *gin.Context) {
